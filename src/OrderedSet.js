@@ -14,18 +14,18 @@ import { emptyOrderedMap } from './OrderedMap';
 import assertNotInfinite from './utils/assertNotInfinite';
 
 export class OrderedSet extends Set {
-  // @pragma Construction
+  
 
   constructor(value) {
     return value === null || value === undefined
       ? emptyOrderedSet()
-      : isOrderedSet(value)
+      : (isOrderedSet(value)
         ? value
         : emptyOrderedSet().withMutations(set => {
             const iter = SetCollection(value);
             assertNotInfinite(iter.size);
             iter.forEach(v => set.add(v));
-          });
+          }));
   }
 
   static of(/*...values*/) {

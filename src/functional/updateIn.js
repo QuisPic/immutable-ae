@@ -65,11 +65,11 @@ function updateInDeeply(
   );
   return nextUpdated === nextExisting
     ? existing
-    : nextUpdated === NOT_SET
+    : (nextUpdated === NOT_SET
       ? remove(existing, key)
       : set(
           wasNotSet ? (inImmutable ? emptyMap() : {}) : existing,
           key,
           nextUpdated
-        );
+        ));
 }

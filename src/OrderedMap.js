@@ -14,18 +14,18 @@ import { DELETE, NOT_SET, SIZE } from './TrieUtils';
 import assertNotInfinite from './utils/assertNotInfinite';
 
 export class OrderedMap extends Map {
-  // @pragma Construction
+  
 
   constructor(value) {
     return value === null || value === undefined
       ? emptyOrderedMap()
-      : isOrderedMap(value)
+      : (isOrderedMap(value)
         ? value
         : emptyOrderedMap().withMutations(map => {
             const iter = KeyedCollection(value);
             assertNotInfinite(iter.size);
             iter.forEach((v, k) => map.set(k, v));
-          });
+          }));
   }
 
   static of(/*...values*/) {
@@ -36,14 +36,14 @@ export class OrderedMap extends Map {
     return this.__toString('OrderedMap {', '}');
   }
 
-  // @pragma Access
+  
 
   get(k, notSetValue) {
     const index = this._map.get(k);
     return index !== undefined ? this._list.get(index)[1] : notSetValue;
   }
 
-  // @pragma Modification
+  
 
   clear() {
     if (this.size === 0) {

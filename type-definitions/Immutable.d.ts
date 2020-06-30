@@ -2526,9 +2526,9 @@ declare module Immutable {
 
     // Deep persistent changes
 
-    setIn(keyPath: Iterable<unknown>, value: unknown): this;
-    updateIn(keyPath: Iterable<unknown>, updater: (value: unknown) => unknown): this;
-    mergeIn(keyPath: Iterable<unknown>, ...collections: Array<unknown>): this;
+    // setIn(keyPath: Iterable<unknown>, value: unknown): this;
+    // updateIn(keyPath: Iterable<unknown>, updater: (value: unknown) => unknown): this;
+    // mergeIn(keyPath: Iterable<unknown>, ...collections: Array<unknown>): this;
     mergeDeepIn(keyPath: Iterable<unknown>, ...collections: Array<unknown>): this;
 
     /**

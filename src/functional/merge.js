@@ -40,9 +40,9 @@ export function mergeWithSources(collection, sources, merger) {
   if (isImmutable(collection)) {
     return typeof merger === 'function' && collection.mergeWith
       ? collection.mergeWith(merger, ...sources)
-      : collection.merge
+      : (collection.merge
         ? collection.merge(...sources)
-        : collection.concat(...sources);
+        : collection.concat(...sources));
   }
   const isArray = Array.isArray(collection);
   let merged = collection;
@@ -77,9 +77,9 @@ function deepMergerWith(merger) {
   function deepMerger(oldValue, newValue, key) {
     return isDataStructure(oldValue) && isDataStructure(newValue)
       ? mergeWithSources(oldValue, [newValue], deepMerger)
-      : merger
+      : (merger
         ? merger(oldValue, newValue, key)
-        : newValue;
+        : newValue);
   }
   return deepMerger;
 }

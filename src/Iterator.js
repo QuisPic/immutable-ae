@@ -36,7 +36,7 @@ Iterator.prototype[ITERATOR_SYMBOL] = function() {
 };
 
 export function iteratorValue(type, k, v, iteratorResult) {
-  const value = type === 0 ? k : type === 1 ? v : [k, v];
+  const value = type === 0 ? k : (type === 1 ? v : [k, v]);
   iteratorResult
     ? (iteratorResult.value = value)
     : (iteratorResult = {

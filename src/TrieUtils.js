@@ -83,13 +83,13 @@ function resolveIndex(index, size, defaultIndex) {
   // http://www.ecma-international.org/ecma-262/6.0/#sec-toint32
   return index === undefined
     ? defaultIndex
-    : isNeg(index)
-      ? size === Infinity
+    : (isNeg(index)
+      ? (size === Infinity
         ? size
-        : Math.max(0, size + index) | 0
-      : size === undefined || size === index
+        : Math.max(0, size + index) | 0)
+      : (size === undefined || size === index
         ? index
-        : Math.min(size, index) | 0;
+        : Math.min(size, index) | 0))
 }
 
 function isNeg(value) {

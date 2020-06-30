@@ -67,9 +67,9 @@ export default function deepEqual(a, b) {
     if (
       notAssociative
         ? !a.has(v)
-        : flipped
+        : (flipped
           ? !is(v, a.get(k, NOT_SET))
-          : !is(a.get(k, NOT_SET), v)
+          : !is(a.get(k, NOT_SET), v))
     ) {
       allEqual = false;
       return false;

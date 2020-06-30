@@ -23,9 +23,9 @@ export function fromJS(value, converter) {
 function fromJSWith(stack, converter, value, key, keyPath, parentValue) {
   const toSeq = Array.isArray(value)
     ? IndexedSeq
-    : isPlainObj(value)
+    : (isPlainObj(value)
       ? KeyedSeq
-      : null;
+      : null);
   if (toSeq) {
     if (~stack.indexOf(value)) {
       throw new TypeError('Cannot convert circular structure to Immutable');

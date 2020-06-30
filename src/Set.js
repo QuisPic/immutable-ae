@@ -19,18 +19,18 @@ import { withMutations } from './methods/withMutations';
 import { OrderedSet } from './OrderedSet';
 
 export class Set extends SetCollection {
-  // @pragma Construction
+  
 
   constructor(value) {
     return value === null || value === undefined
       ? emptySet()
-      : isSet(value) && !isOrdered(value)
+      : (isSet(value) && !isOrdered(value)
         ? value
         : emptySet().withMutations(set => {
             const iter = SetCollection(value);
             assertNotInfinite(iter.size);
             iter.forEach(v => set.add(v));
-          });
+          }));
   }
 
   static of(/*...values*/) {
@@ -59,13 +59,13 @@ export class Set extends SetCollection {
     return this.__toString('Set {', '}');
   }
 
-  // @pragma Access
+  
 
   has(value) {
     return this._map.has(value);
   }
 
-  // @pragma Modification
+  
 
   add(value) {
     return updateSet(this, this._map.set(value, value));
@@ -79,7 +79,7 @@ export class Set extends SetCollection {
     return updateSet(this, this._map.clear());
   }
 
-  // @pragma Composition
+  
 
   map(mapper, context) {
     const removes = [];
@@ -214,9 +214,9 @@ function updateSet(set, newMap) {
   }
   return newMap === set._map
     ? set
-    : newMap.size === 0
+    : (newMap.size === 0
       ? set.__empty()
-      : set.__make(newMap);
+      : set.__make(newMap));
 }
 
 function makeSet(map, ownerID) {

@@ -301,7 +301,7 @@ export function reverseFactory(collection, useKeys) {
     let i = 0;
     reverse && ensureSize(collection);
     return collection.__iterate(
-      (v, k) => fn(v, useKeys ? k : reverse ? this.size - ++i : i++, this),
+      (v, k) => fn(v, useKeys ? k : (reverse ? this.size - ++i : i++), this),
       !reverse
     );
   };
@@ -317,7 +317,7 @@ export function reverseFactory(collection, useKeys) {
       const entry = step.value;
       return iteratorValue(
         type,
-        useKeys ? entry[0] : reverse ? this.size - ++i : i++,
+        useKeys ? entry[0] : (reverse ? this.size - ++i : i++),
         entry[1],
         step
       );
@@ -744,9 +744,9 @@ export function sortFactory(collection, comparator, mapper) {
   );
   return isKeyedCollection
     ? KeyedSeq(entries)
-    : isIndexed(collection)
+    : (isIndexed(collection)
       ? IndexedSeq(entries)
-      : SetSeq(entries);
+      : SetSeq(entries));
 }
 
 export function maxFactory(collection, comparator, mapper) {
@@ -831,7 +831,7 @@ export function zipWithFactory(keyIter, zipper, iters, zipAll) {
 // #pragma Helper Functions
 
 export function reify(iter, seq) {
-  return iter === seq ? iter : isSeq(iter) ? seq : iter.constructor(seq);
+  return iter === seq ? iter : (isSeq(iter) ? seq : iter.constructor(seq));
 }
 
 function validateEntry(entry) {
@@ -843,18 +843,18 @@ function validateEntry(entry) {
 function collectionClass(collection) {
   return isKeyed(collection)
     ? KeyedCollection
-    : isIndexed(collection)
+    : (isIndexed(collection)
       ? IndexedCollection
-      : SetCollection;
+      : SetCollection);
 }
 
 function makeSequence(collection) {
   return Object.create(
     (isKeyed(collection)
       ? KeyedSeq
-      : isIndexed(collection)
+      : (isIndexed(collection)
         ? IndexedSeq
-        : SetSeq
+        : SetSeq)
     ).prototype
   );
 }
@@ -881,5 +881,5 @@ function defaultComparator(a, b) {
     return -1;
   }
 
-  return a > b ? 1 : a < b ? -1 : 0;
+  return a > b ? 1 : (a < b ? -1 : 0);
 }

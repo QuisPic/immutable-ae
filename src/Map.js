@@ -40,18 +40,18 @@ import { wasAltered } from './methods/wasAltered';
 import { OrderedMap } from './OrderedMap';
 
 export class Map extends KeyedCollection {
-  // @pragma Construction
+  
 
   constructor(value) {
     return value === null || value === undefined
       ? emptyMap()
-      : isMap(value) && !isOrdered(value)
+      : (isMap(value) && !isOrdered(value)
         ? value
         : emptyMap().withMutations(map => {
             const iter = KeyedCollection(value);
             assertNotInfinite(iter.size);
             iter.forEach((v, k) => map.set(k, v));
-          });
+          }));
   }
 
   static of(...keyValues) {
@@ -69,7 +69,7 @@ export class Map extends KeyedCollection {
     return this.__toString('Map {', '}');
   }
 
-  // @pragma Access
+  
 
   get(k, notSetValue) {
     return this._root
@@ -77,7 +77,7 @@ export class Map extends KeyedCollection {
       : notSetValue;
   }
 
-  // @pragma Modification
+  
 
   set(k, v) {
     return updateMap(this, k, v);
@@ -113,7 +113,7 @@ export class Map extends KeyedCollection {
     return emptyMap();
   }
 
-  // @pragma Composition
+  
 
   sort(comparator) {
     // Late binding
@@ -133,7 +133,7 @@ export class Map extends KeyedCollection {
     });
   }
 
-  // @pragma Mutability
+  
 
   __iterator(type, reverse) {
     return new MapIterator(this, type, reverse);
@@ -336,9 +336,9 @@ class BitmapIndexedNode {
     const isEditable = ownerID && ownerID === this.ownerID;
     const newBitmap = exists ? (newNode ? bitmap : bitmap ^ bit) : bitmap | bit;
     const newNodes = exists
-      ? newNode
+      ? (newNode
         ? setAt(nodes, idx, newNode, isEditable)
-        : spliceOut(nodes, idx, isEditable)
+        : spliceOut(nodes, idx, isEditable))
       : spliceIn(nodes, idx, newNode, isEditable);
 
     if (isEditable) {

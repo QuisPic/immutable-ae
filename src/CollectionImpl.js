@@ -150,9 +150,9 @@ mixin(Collection, {
   toSeq() {
     return isIndexed(this)
       ? this.toIndexedSeq()
-      : isKeyed(this)
+      : (isKeyed(this)
         ? this.toKeyedSeq()
-        : this.toSetSeq();
+        : this.toSetSeq());
   },
 
   toStack() {
@@ -760,7 +760,7 @@ function defaultZipper() {
 }
 
 function defaultNegComparator(a, b) {
-  return a < b ? 1 : a > b ? -1 : 0;
+  return a < b ? 1 : (a > b ? -1 : 0);
 }
 
 function hashCollection(collection) {
@@ -772,20 +772,20 @@ function hashCollection(collection) {
   let h = ordered ? 1 : 0;
   const size = collection.__iterate(
     keyed
-      ? ordered
+      ? (ordered
         ? (v, k) => {
             h = (31 * h + hashMerge(hash(v), hash(k))) | 0;
           }
         : (v, k) => {
             h = (h + hashMerge(hash(v), hash(k))) | 0;
-          }
-      : ordered
+          })
+      : (ordered
         ? v => {
             h = (31 * h + hash(v)) | 0;
           }
         : v => {
             h = (h + hash(v)) | 0;
-          }
+          })
   );
   return murmurHashOfSize(size, h);
 }

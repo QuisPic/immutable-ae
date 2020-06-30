@@ -17,14 +17,14 @@ import { wasAltered } from './methods/wasAltered';
 import { withMutations } from './methods/withMutations';
 
 export class Stack extends IndexedCollection {
-  // @pragma Construction
+  
 
   constructor(value) {
     return value === null || value === undefined
       ? emptyStack()
-      : isStack(value)
+      : (isStack(value)
         ? value
-        : emptyStack().pushAll(value);
+        : emptyStack().pushAll(value));
   }
 
   static of(/*...values*/) {
@@ -35,7 +35,7 @@ export class Stack extends IndexedCollection {
     return this.__toString('Stack [', ']');
   }
 
-  // @pragma Access
+  
 
   get(index, notSetValue) {
     let head = this._head;
@@ -50,7 +50,7 @@ export class Stack extends IndexedCollection {
     return this._head && this._head.value;
   }
 
-  // @pragma Modification
+  
 
   push(/*...values*/) {
     if (arguments.length === 0) {
@@ -145,7 +145,7 @@ export class Stack extends IndexedCollection {
     return makeStack(newSize, head);
   }
 
-  // @pragma Mutability
+  
 
   __ensureOwner(ownerID) {
     if (ownerID === this.__ownerID) {
@@ -162,7 +162,7 @@ export class Stack extends IndexedCollection {
     return makeStack(this.size, this._head, ownerID, this.__hash);
   }
 
-  // @pragma Iteration
+  
 
   __iterate(fn, reverse) {
     if (reverse) {

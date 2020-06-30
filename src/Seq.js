@@ -30,9 +30,9 @@ export class Seq extends Collection {
   constructor(value) {
     return value === null || value === undefined
       ? emptySequence()
-      : isImmutable(value)
+      : (isImmutable(value)
         ? value.toSeq()
-        : seqFromValue(value);
+        : seqFromValue(value));
   }
 
   toSeq() {
@@ -92,13 +92,13 @@ export class KeyedSeq extends Seq {
   constructor(value) {
     return value === null || value === undefined
       ? emptySequence().toKeyedSeq()
-      : isCollection(value)
-        ? isKeyed(value)
+      : (isCollection(value)
+        ? (isKeyed(value)
           ? value.toSeq()
-          : value.fromEntrySeq()
-        : isRecord(value)
+          : value.fromEntrySeq())
+        : (isRecord(value)
           ? value.toSeq()
-          : keyedSeqFromValue(value);
+          : keyedSeqFromValue(value)));
   }
 
   toKeyedSeq() {
@@ -110,13 +110,13 @@ export class IndexedSeq extends Seq {
   constructor(value) {
     return value === null || value === undefined
       ? emptySequence()
-      : isCollection(value)
-        ? isKeyed(value)
+      : (isCollection(value)
+        ? (isKeyed(value)
           ? value.entrySeq()
-          : value.toIndexedSeq()
-        : isRecord(value)
+          : value.toIndexedSeq())
+        : (isRecord(value)
           ? value.toSeq().entrySeq()
-          : indexedSeqFromValue(value);
+          : indexedSeqFromValue(value)));
   }
 
   static of(/*...values*/) {
@@ -296,9 +296,9 @@ function emptySequence() {
 export function keyedSeqFromValue(value) {
   const seq = Array.isArray(value)
     ? new ArraySeq(value)
-    : hasIterator(value)
+    : (hasIterator(value)
       ? new CollectionSeq(value)
-      : undefined;
+      : undefined);
   if (seq) {
     return seq.fromEntrySeq();
   }
@@ -337,7 +337,7 @@ function seqFromValue(value) {
 function maybeIndexedSeqFromValue(value) {
   return isArrayLike(value)
     ? new ArraySeq(value)
-    : hasIterator(value)
+    : (hasIterator(value)
       ? new CollectionSeq(value)
-      : undefined;
+      : undefined);
 }

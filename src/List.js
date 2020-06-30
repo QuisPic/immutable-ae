@@ -34,7 +34,7 @@ import { wasAltered } from './methods/wasAltered';
 import assertNotInfinite from './utils/assertNotInfinite';
 
 export class List extends IndexedCollection {
-  // @pragma Construction
+  
 
   constructor(value) {
     const empty = emptyList();
@@ -67,7 +67,7 @@ export class List extends IndexedCollection {
     return this.__toString('List [', ']');
   }
 
-  // @pragma Access
+  
 
   get(index, notSetValue) {
     index = wrapIndex(this, index);
@@ -79,7 +79,7 @@ export class List extends IndexedCollection {
     return notSetValue;
   }
 
-  // @pragma Modification
+  
 
   set(index, value) {
     return updateList(this, index, value);
@@ -88,11 +88,11 @@ export class List extends IndexedCollection {
   remove(index) {
     return !this.has(index)
       ? this
-      : index === 0
+      : (index === 0
         ? this.shift()
-        : index === this.size - 1
+        : (index === this.size - 1
           ? this.pop()
-          : this.splice(index, 1);
+          : this.splice(index, 1)));
   }
 
   insert(index, value) {
@@ -143,7 +143,7 @@ export class List extends IndexedCollection {
     return setListBounds(this, 1);
   }
 
-  // @pragma Composition
+  
 
   concat(/*...collections*/) {
     const seqs = [];
@@ -181,7 +181,7 @@ export class List extends IndexedCollection {
     });
   }
 
-  // @pragma Iteration
+  
 
   slice(begin, end) {
     const size = this.size;
@@ -545,9 +545,9 @@ function setListBounds(list, begin, end) {
   let newCapacity =
     end === undefined
       ? oldCapacity
-      : end < 0
+      : (end < 0
         ? oldCapacity + end
-        : oldOrigin + end;
+        : oldOrigin + end);
   if (newOrigin === oldOrigin && newCapacity === oldCapacity) {
     return list;
   }
@@ -594,9 +594,9 @@ function setListBounds(list, begin, end) {
   let newTail =
     newTailOffset < oldTailOffset
       ? listNodeFor(list, newCapacity - 1)
-      : newTailOffset > oldTailOffset
+      : (newTailOffset > oldTailOffset
         ? new VNode([], owner)
-        : oldTail;
+        : oldTail);
 
   // Merge Tail into tree.
   if (

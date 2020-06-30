@@ -115,7 +115,7 @@ export class Record {
     return recordSeq(this).hashCode();
   }
 
-  // @pragma Access
+  
 
   has(k) {
     return this._indices.hasOwnProperty(k);
@@ -130,7 +130,7 @@ export class Record {
     return value === undefined ? this._defaultValues[k] : value;
   }
 
-  // @pragma Modification
+  
 
   set(k, v) {
     if (this.has(k)) {
