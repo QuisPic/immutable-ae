@@ -97,7 +97,7 @@
  * [Iterable]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols
  */
 
-
+import { L, Any, Iteration } from 'ts-toolbelt'
 
   /**
    * Lists are ordered indexed dense collections, much like a JavaScript
@@ -1380,6 +1380,85 @@
      */
     flip(): Map<V, K>;
   }
+
+  type ProtoExtends<T, U> = U & Omit<T, keyof U>
+  type ImmutableToObject<T extends any> = T extends OMap<infer O>
+  ? O
+  : T extends Map<infer K, infer V>
+    ? { [I in K]: V }
+    : T extends  OrderedMap<infer K, infer V>
+      ? { [I in K]: V }
+      : T extends Record<infer V>
+        ? { [I in keyof V]: V[I] }
+        : T extends List<infer V>
+          ? V[]
+          : T
+
+  type At<
+    O extends object,
+    K extends Any.Key
+  > = [K & keyof O] extends [never] ? never : O[K & keyof O]
+
+  type _Path<
+    O extends any,
+    Path extends L.List<Any.Key>,
+    I extends Iteration.Iteration = Iteration.IterationOf<'0'>,
+    P = any
+  > = {
+    0: _Path<
+    At<NonNullable<ImmutableToObject<O>> & {}, Path[Iteration.Pos<I>]>,
+    Path,
+    Iteration.Next<I>,
+    O
+    >
+    1: P extends List<O> ? O | undefined : O
+  }[Any.Extends<Iteration.Pos<I>, L.Length<Path>>];
+
+  type ImmutablePath<
+    O extends any,
+    Path extends L.List<Any.Key>
+  > = Path extends unknown ? _Path<O, Path> : never
+
+  interface MapOverride<O> {
+    get<K extends keyof O>(key: K): O[K]
+    set<K extends keyof O>(key: K, value: O[K]): this
+    update<K extends keyof O>(
+      key: K,
+      notSetValue: O[K],
+      updater: (value: O[K]) => O[K]
+    ): this
+    update<K extends keyof O>(key: K, updater: (value: O[K]) => O[K]): this
+    update(updater: (value: this) => this): this
+    merge<K>(...collections: Array<OMap<K>>): OMap<O & K>
+    merge<K>(...collections: Array<K>): OMap<O & K>
+
+    getIn<
+    P extends L.List<Any.Key>,
+    M extends ImmutablePath<O, P>,
+    >(path: P, notSetValue?: M): M
+
+    mergeIn<
+      P extends L.List<Any.Key>,
+      M extends ImmutablePath<O, P>
+    >(path: P, object: M): this
+
+    updateIn<
+      P extends L.List<Any.Key>,
+      M extends ImmutablePath<O, P>
+    >(path: P, updater: (value: M) => M): this
+
+    updateIn<
+      P extends L.List<Any.Key>,
+      M extends ImmutablePath<O, P>
+    >(path: P, notSetValue: M, updater: (value: M) => M): this
+
+    setIn<
+      P extends L.List<Any.Key>,
+      M extends ImmutablePath<O, P>
+    >(path: P, value: M): this
+  }
+
+  export type OMap<O> = ProtoExtends<Map<keyof O, O[keyof O]>, MapOverride<O>>
 
 
   /**

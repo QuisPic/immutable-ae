@@ -1381,7 +1381,6 @@ declare module Immutable {
     flip(): Map<V, K>;
   }
 
-
   /**
    * A type of Map that has the additional guarantee that the iteration order of
    * entries will be the order in which they were set().
