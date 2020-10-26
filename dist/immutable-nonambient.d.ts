@@ -1425,12 +1425,14 @@ import { L, Any, Iteration } from 'ts-toolbelt'
     update<K extends keyof O>(
       key: K,
       notSetValue: O[K],
-      updater: (value: O[K]) => O[K]
+      updater: (value: NonNullable<O[K]>) => O[K]
     ): this
     update<K extends keyof O>(key: K, updater: (value: O[K]) => O[K]): this
     update(updater: (value: this) => this): this
     merge<K>(...collections: Array<OMap<K>>): OMap<O & K>
     merge<K>(...collections: Array<K>): OMap<O & K>
+    mergeDeep<K>(...collections: Array<OMap<K>>): OMap<O & K>
+    mergeDeep<K>(...collections: Array<K>): OMap<O & K>
 
     getIn<
     P extends L.List<Any.Key>,
