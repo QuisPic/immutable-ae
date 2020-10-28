@@ -1433,6 +1433,10 @@ import { L, Any, Iteration } from 'ts-toolbelt'
     merge<K>(...collections: Array<K>): OMap<O & K>
     mergeDeep<K>(...collections: Array<OMap<K>>): OMap<O & K>
     mergeDeep<K>(...collections: Array<K>): OMap<O & K>
+    mergeWith<K>(
+      merger: (oldVal: OMap<K>, newVal: OMap<K>, key?: string) => typeof oldVal & typeof newVal,
+      ...collections: Array<OMap<K> | K>
+    ): OMap<O & K>
 
     getIn<
     P extends L.List<Any.Key>,
